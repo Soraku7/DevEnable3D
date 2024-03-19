@@ -38,4 +38,12 @@ private:
 
 	UPROPERTY(VisibleDefaultsOnly , Category = "Component" , meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* CameraComponent;
+
+	UFUNCTION(BlueprintCallable)
+	void MoveForward(const float InputValue);
+
+	UFUNCTION(BlueprintCallable)
+	void MoveRight(const float InputValue);
+	
+	FVector GetMovementDirection(const FVector& InVector) const;
 };

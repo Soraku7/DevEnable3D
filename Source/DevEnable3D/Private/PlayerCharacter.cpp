@@ -51,3 +51,17 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
+void APlayerCharacter::MoveForward(const float InputValue)
+{
+	AddMovementInput(GetMovementDirection(FVector::ForwardVector) , InputValue);
+}
+
+void APlayerCharacter::MoveRight(const float InputValue)
+{
+	AddMovementInput(GetMovementDirection(FVector::RightVector) , InputValue);
+}
+
+FVector APlayerCharacter::GetMovementDirection(const FVector& InVector) const
+{
+	return FRotator(0.0f , GetControlRotation().Yaw , 0.0f).RotateVector(InVector);
+}
