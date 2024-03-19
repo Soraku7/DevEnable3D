@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
+class UCameraComponent;
+class USpringArmComponent;
+
 UCLASS()
 class DEVENABLE3D_API APlayerCharacter : public ACharacter
 {
@@ -25,4 +28,14 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+private:
+	UPROPERTY(VisibleDefaultsOnly , Category = "Component" , meta = (AllowPrivateAccess = "true"))
+	UStaticMeshComponent* MaskMeshComponent;
+
+	UPROPERTY(VisibleDefaultsOnly , Category = "Component" , meta = (AllowPrivateAccess = "true"))
+	USpringArmComponent* SpringArmComponent;
+
+	UPROPERTY(VisibleDefaultsOnly , Category = "Component" , meta = (AllowPrivateAccess = "true"))
+	UCameraComponent* CameraComponent;
 };
