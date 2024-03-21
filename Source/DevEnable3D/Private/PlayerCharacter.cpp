@@ -13,6 +13,9 @@
 APlayerCharacter::APlayerCharacter()
 {
 	bUseControllerRotationYaw = false;
+	JumpMaxHoldTime = 0.25f;
+	JumpMaxCount = 2;
+	
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -30,13 +33,17 @@ APlayerCharacter::APlayerCharacter()
 	CameraComponent -> SetupAttachment(SpringArmComponent);
 
 	GetCharacterMovement() ->bOrientRotationToMovement = true;
+	GetCharacterMovement() -> GravityScale = 4.0f;
+	GetCharacterMovement() -> JumpZVelocity = 1000.0f;
+	GetCharacterMovement() -> AirControl = 1.0f;
 }
 
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	DefaultMovementSpeed = GetCharacterMovement() -> MaxWalkSpeed;
 }
 
 // Called every frame
@@ -59,6 +66,16 @@ void APlayerCharacter::MoveForward(const float InputValue)
 void APlayerCharacter::MoveRight(const float InputValue)
 {
 	AddMovementInput(GetMovementDirection(FVector::RightVector) , InputValue);
+}
+
+void APlayerCharacter::Walk()
+{
+	GetCharacterMovement() -> MaxWalkSpeed = DefaultMovementSpeed * 0.5;
+}
+
+void APlayerCharacter::StopWalk()
+{
+	GetCharacterMovement() -> MaxWalkSpeed = DefaultMovementSpeed;
 }
 
 FVector APlayerCharacter::GetMovementDirection(const FVector& InVector) const
