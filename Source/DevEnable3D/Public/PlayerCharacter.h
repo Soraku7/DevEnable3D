@@ -29,6 +29,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	FORCEINLINE bool GetIsJumping() const {return IsJumping;}
+
 private:
 	UPROPERTY(VisibleDefaultsOnly , Category = "Component" , meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* MaskMeshComponent;
@@ -40,18 +42,31 @@ private:
 	UCameraComponent* CameraComponent;
 	
 	float DefaultMovementSpeed;
+
+	bool IsJumping;
+
+	UPROPERTY(EditAnywhere , Category = "Movement" , meta = (AllowPrivateAccess = "true"))
+	float WalkSpeedMultiplier = 0.5f;
+
+	UPROPERTY(EditAnywhere , Category = "Movement" , meta = (AllowPrivateAccess = "true"))
+	float SprintSpeedMultiplier = 2.0f;
 	
 	UFUNCTION(BlueprintCallable)
 	void MoveForward(const float InputValue);
-
+	
 	UFUNCTION(BlueprintCallable)
 	void MoveRight(const float InputValue);
+	
+	UFUNCTION(BlueprintCallable)
+	void Sprint();
 
 	UFUNCTION(BlueprintCallable)
 	void Walk();
 
+	void DoJump();
+	
 	UFUNCTION(BlueprintCallable)
-	void StopWalk();
+	void ResetMoveSpeed();
 	
 	FVector GetMovementDirection(const FVector& InVector) const;
 };

@@ -68,12 +68,23 @@ void APlayerCharacter::MoveRight(const float InputValue)
 	AddMovementInput(GetMovementDirection(FVector::RightVector) , InputValue);
 }
 
-void APlayerCharacter::Walk()
+void APlayerCharacter::Sprint()
 {
-	GetCharacterMovement() -> MaxWalkSpeed = DefaultMovementSpeed * 0.5;
+	GetCharacterMovement() -> MaxWalkSpeed = DefaultMovementSpeed * SprintSpeedMultiplier;
 }
 
-void APlayerCharacter::StopWalk()
+void APlayerCharacter::Walk()
+{
+	GetCharacterMovement() -> MaxWalkSpeed = DefaultMovementSpeed * WalkSpeedMultiplier;
+}
+
+void APlayerCharacter::DoJump()
+{
+	Jump();
+	IsJumping = true;
+}
+
+void APlayerCharacter::ResetMoveSpeed()
 {
 	GetCharacterMovement() -> MaxWalkSpeed = DefaultMovementSpeed;
 }
