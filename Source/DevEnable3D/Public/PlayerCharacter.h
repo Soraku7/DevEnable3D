@@ -32,7 +32,7 @@ public:
 
 	FORCEINLINE bool GetIsJumping() const {return IsJumping;}
 
-	bool GetInAir() const;
+	bool GetIsFalling() const;
 
 private:
 	UPROPERTY(VisibleDefaultsOnly , Category = "Component" , meta = (AllowPrivateAccess = "true"))
@@ -71,6 +71,9 @@ private:
 	
 	UFUNCTION(BlueprintCallable)
 	void ResetMoveSpeed();
+	
+	UFUNCTION()
+	void OnCharacterLanded(const FHitResult& Hit);
 	
 	FVector GetMovementDirection(const FVector& InVector) const;
 };

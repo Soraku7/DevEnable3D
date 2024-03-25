@@ -17,22 +17,22 @@ class DEVENABLE3D_API UPlayerCharacterAnimInstance : public UAnimInstance
 
 protected:
 	virtual void NativeBeginPlay() override;
+
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	
 public:
-	FORCEINLINE void SetIsJumping(const bool InValue) {IsJump = InValue;} 
 
 private:
 	UPROPERTY(BlueprintReadOnly , Category = "Parameters" , meta = (AllowPrivateAccess = "true"))
 	bool IsJump;
 	
 	UPROPERTY(BlueprintReadOnly , Category = "Parameters" , meta = (AllowPrivateAccess = "true"))
-	bool IsInAir;
+	bool IsFalling;
 	
 	UPROPERTY(BlueprintReadOnly , Category = "Parameters" , meta = (AllowPrivateAccess = "true"))
 	float MoveSpeed;
 	
 	APlayerCharacter* PlayerCharacter;
 	
-	UFUNCTION(BlueprintCallable)
 	void UpdateParameters();
 };

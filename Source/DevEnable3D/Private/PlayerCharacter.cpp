@@ -35,7 +35,7 @@ APlayerCharacter::APlayerCharacter()
 	GetCharacterMovement() ->bOrientRotationToMovement = true;
 	GetCharacterMovement() -> GravityScale = 4.0f;
 	GetCharacterMovement() -> JumpZVelocity = 1000.0f;
-	GetCharacterMovement() -> AirControl = 1.0f;
+	GetCharacterMovement() -> AirControl = 1.0f; 
 }
 
 // Called when the game starts or when spawned
@@ -44,6 +44,8 @@ void APlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	DefaultMovementSpeed = GetCharacterMovement() -> MaxWalkSpeed;
+
+	LandedDelegate.AddDynamic(this , &APlayerCharacter::OnCharacterLanded);
 }
 
 // Called every frame
@@ -58,9 +60,14 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-bool APlayerCharacter::GetInAir() const
+bool APlayerCharacter::GetIsFalling() const
 { 
-	return GetCharacterMovement() -> IsFalling();
+	return GetCharacterMovement() -> IsFalling() && GetVelocity().Z < 0.0f;
+}
+
+void APlayerCharacter::OnCharacterLanded(const FHitResult& Hit)
+{
+	IsJumping = false;
 }
 
 void APlayerCharacter::MoveForward(const float InputValue)
