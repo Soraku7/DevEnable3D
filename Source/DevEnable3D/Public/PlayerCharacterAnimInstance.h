@@ -24,7 +24,13 @@ public:
 private:
 	UPROPERTY(BlueprintReadOnly , Category = "Parameters" , meta = (AllowPrivateAccess = "true"))
 	bool IsJump;
-
+	
+	UPROPERTY(BlueprintReadOnly , Category = "Parameters" , meta = (AllowPrivateAccess = "true"))
+	bool IsInAir;
+	
+	UPROPERTY(BlueprintReadOnly , Category = "Parameters" , meta = (AllowPrivateAccess = "true"))
+	float MoveSpeed;
+	
 	APlayerCharacter* PlayerCharacter;
 	
 	UFUNCTION(BlueprintCallable)

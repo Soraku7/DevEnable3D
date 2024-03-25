@@ -58,6 +58,11 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
+bool APlayerCharacter::GetInAir() const
+{ 
+	return GetCharacterMovement() -> IsFalling();
+}
+
 void APlayerCharacter::MoveForward(const float InputValue)
 {
 	AddMovementInput(GetMovementDirection(FVector::ForwardVector) , InputValue);

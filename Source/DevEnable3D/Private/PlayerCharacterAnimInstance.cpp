@@ -14,5 +14,9 @@ void UPlayerCharacterAnimInstance::NativeBeginPlay()
 
 void UPlayerCharacterAnimInstance::UpdateParameters()
 {
+	if(PlayerCharacter == nullptr) return;
+
+	MoveSpeed = PlayerCharacter -> GetVelocity().Length();
 	IsJump = PlayerCharacter -> GetIsJumping();
+	IsInAir = PlayerCharacter -> GetInAir();
 }

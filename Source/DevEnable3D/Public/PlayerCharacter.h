@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "PlayerCharacter.generated.h"
 
 class UCameraComponent;
@@ -30,6 +31,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	FORCEINLINE bool GetIsJumping() const {return IsJumping;}
+
+	bool GetInAir() const;
 
 private:
 	UPROPERTY(VisibleDefaultsOnly , Category = "Component" , meta = (AllowPrivateAccess = "true"))
@@ -63,6 +66,7 @@ private:
 	UFUNCTION(BlueprintCallable)
 	void Walk();
 
+	UFUNCTION(BlueprintCallable)
 	void DoJump();
 	
 	UFUNCTION(BlueprintCallable)
