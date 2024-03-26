@@ -32,7 +32,9 @@ public:
 
 	FORCEINLINE bool GetIsJumping() const {return IsJumping;}
 
-	bool GetIsFalling() const;
+	FORCEINLINE bool GetIsAirJumping() const {return IsAirJumping;}
+
+	bool GetIsFalling();
 
 private:
 	UPROPERTY(VisibleDefaultsOnly , Category = "Component" , meta = (AllowPrivateAccess = "true"))
@@ -47,6 +49,10 @@ private:
 	float DefaultMovementSpeed;
 
 	bool IsJumping;
+
+	bool IsAirJumping;
+
+	int32 JumpCount;
 
 	UPROPERTY(EditAnywhere , Category = "Movement" , meta = (AllowPrivateAccess = "true"))
 	float WalkSpeedMultiplier = 0.5f;
@@ -65,6 +71,10 @@ private:
 
 	UFUNCTION(BlueprintCallable)
 	void Walk();
+	
+	void AirJump();
+	
+	void GroundJump();
 
 	UFUNCTION(BlueprintCallable)
 	void DoJump();

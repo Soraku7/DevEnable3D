@@ -24,5 +24,6 @@ void UPlayerCharacterAnimInstance::UpdateParameters()
 
 	MoveSpeed = PlayerCharacter -> GetVelocity().Length();
 	IsJump = PlayerCharacter -> GetIsJumping();
+	IsAirJumping = PlayerCharacter -> GetIsAirJumping();
 	IsFalling = PlayerCharacter -> GetIsFalling();
 }

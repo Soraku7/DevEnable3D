@@ -60,14 +60,17 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-bool APlayerCharacter::GetIsFalling() const
-{ 
+bool APlayerCharacter::GetIsFalling()
+{
+	IsAirJumping = false;
+	
 	return GetCharacterMovement() -> IsFalling() && GetVelocity().Z < 0.0f;
 }
 
 void APlayerCharacter::OnCharacterLanded(const FHitResult& Hit)
 {
 	IsJumping = false;
+	JumpCount = 0;
 }
 
 void APlayerCharacter::MoveForward(const float InputValue)
@@ -90,10 +93,35 @@ void APlayerCharacter::Walk()
 	GetCharacterMovement() -> MaxWalkSpeed = DefaultMovementSpeed * WalkSpeedMultiplier;
 }
 
-void APlayerCharacter::DoJump()
+void APlayerCharacter::AirJump()
+{
+	Jump();
+	IsAirJumping = true;
+	IsJumping = false;
+	JumpCount ++;
+}
+
+void APlayerCharacter::GroundJump()
 {
 	Jump();
 	IsJumping = true;
+	JumpCount++;
+}
+
+void APlayerCharacter::DoJump()
+{
+	if(GetMovementComponent() -> IsMovingOnGround())
+	{
+		GroundJump();
+
+		return;
+	}
+
+	if(JumpCount < JumpMaxCount)
+	{
+		AirJump();
+	}
+	
 }
 
 void APlayerCharacter::ResetMoveSpeed()

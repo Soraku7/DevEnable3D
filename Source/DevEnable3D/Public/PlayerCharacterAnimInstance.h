@@ -28,6 +28,9 @@ private:
 	
 	UPROPERTY(BlueprintReadOnly , Category = "Parameters" , meta = (AllowPrivateAccess = "true"))
 	bool IsFalling;
+
+	UPROPERTY(BlueprintReadOnly , Category = "Parameters" , meta = (AllowPrivateAccess = "true"))
+	bool IsAirJumping;
 	
 	UPROPERTY(BlueprintReadOnly , Category = "Parameters" , meta = (AllowPrivateAccess = "true"))
 	float MoveSpeed;
