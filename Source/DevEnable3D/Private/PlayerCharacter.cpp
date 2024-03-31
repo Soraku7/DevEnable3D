@@ -38,6 +38,14 @@ APlayerCharacter::APlayerCharacter()
 	GetCharacterMovement() -> AirControl = 1.0f; 
 }
 
+void APlayerCharacter::InitialProperties()
+{
+	WallCheckCapsule = FCollisionShape::MakeCapsule(
+		GetCapsuleComponent()->GetScaledCapsuleRadius() + 1.0f, GetCapsuleComponent()->GetScaledCapsuleHalfHeight());
+
+	QueryParams.AddIgnoredActor(this);
+}
+
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
@@ -45,6 +53,8 @@ void APlayerCharacter::BeginPlay()
 
 	DefaultMovementSpeed = GetCharacterMovement() -> MaxWalkSpeed;
 
+	InitialProperties();
+	
 	LandedDelegate.AddDynamic(this , &APlayerCharacter::OnCharacterLanded);
 }
 
@@ -52,6 +62,8 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	IsTouchingWall();
 }
 
 // Called to bind functionality to input
@@ -67,9 +79,16 @@ bool APlayerCharacter::GetIsFalling()
 	return GetCharacterMovement() -> IsFalling() && GetVelocity().Z < 0.0f;
 }
 
-void APlayerCharacter::OnCharacterLanded(const FHitResult& Hit)
+bool APlayerCharacter::GetIsGround() const
 {
+	return GetCharacterMovement() -> IsMovingOnGround();
+}
+
+void APlayerCharacter::OnCharacterLanded(const FHitResult& Hit)
+{ 
 	IsJumping = false;
+	IsAirJumping = false;
+	IsWallSliding = false;
 	JumpCount = 0;
 }
 
@@ -132,4 +151,17 @@ void APlayerCharacter::ResetMoveSpeed()
 FVector APlayerCharacter::GetMovementDirection(const FVector& InVector) const
 {
 	return FRotator(0.0f , GetControlRotation().Yaw , 0.0f).RotateVector(InVector);
+}
+
+void APlayerCharacter::IsTouchingWall()
+{
+	if(GetCharacterMovement() -> IsMovingOnGround()) return;
+	
+	const bool HitWall = GetWorld()->SweepSingleByChannel(WallCheckResult, GetActorLocation(), GetActorLocation(),
+	                                 GetActorRotation().Quaternion(), ECC_Visibility, WallCheckCapsule, QueryParams);
+
+	DrawDebugCapsule(GetWorld(), GetActorLocation(), WallCheckCapsule.GetCapsuleHalfHeight(),
+	                 WallCheckCapsule.GetCapsuleRadius(), GetActorRotation().Quaternion(), FColor::Red, false, 5.0f);
+
+	IsWallSliding = HitWall && WallCheckResult.GetActor() -> ActorHasTag(WallCheckTag);
 }

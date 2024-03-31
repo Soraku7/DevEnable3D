@@ -34,7 +34,11 @@ public:
 
 	FORCEINLINE bool GetIsAirJumping() const {return IsAirJumping;}
 
+	FORCEINLINE bool GetIsWallSliding() const {return IsWallSliding;}
+
 	bool GetIsFalling();
+
+	bool GetIsGround() const;
 
 private:
 	UPROPERTY(VisibleDefaultsOnly , Category = "Component" , meta = (AllowPrivateAccess = "true"))
@@ -45,6 +49,13 @@ private:
 
 	UPROPERTY(VisibleDefaultsOnly , Category = "Component" , meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* CameraComponent;
+
+	FHitResult WallCheckResult;
+
+	FCollisionShape WallCheckCapsule;
+
+	FCollisionQueryParams QueryParams;
+
 	
 	float DefaultMovementSpeed;
 
@@ -52,7 +63,11 @@ private:
 
 	bool IsAirJumping;
 
+	bool IsWallSliding;
+
 	int32 JumpCount;
+
+	FName WallCheckTag = FName("Wall");
 
 	UPROPERTY(EditAnywhere , Category = "Movement" , meta = (AllowPrivateAccess = "true"))
 	float WalkSpeedMultiplier = 0.5f;
@@ -86,4 +101,8 @@ private:
 	void OnCharacterLanded(const FHitResult& Hit);
 	
 	FVector GetMovementDirection(const FVector& InVector) const;
+
+	void IsTouchingWall();
+
+	void InitialProperties();
 };
