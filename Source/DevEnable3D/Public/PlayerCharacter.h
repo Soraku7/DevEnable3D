@@ -58,12 +58,15 @@ private:
 
 	
 	float DefaultMovementSpeed;
+	float DefaultGravityScale;
 
 	bool IsJumping;
 
 	bool IsAirJumping;
 
 	bool IsWallSliding;
+
+	bool HasZVelocityReset;	
 
 	int32 JumpCount;
 
@@ -74,6 +77,15 @@ private:
 
 	UPROPERTY(EditAnywhere , Category = "Movement" , meta = (AllowPrivateAccess = "true"))
 	float SprintSpeedMultiplier = 2.0f;
+
+	UPROPERTY(EditAnywhere , Category = "Wall Slide" , meta = (AllowPrivateAccess = "true"))
+	float WallSlideGravityScale = 0.2f;
+
+	UPROPERTY(EditAnywhere , Category = "Wall Slide" , meta = (AllowPrivateAccess = "true"))
+	float WallSlideDeceleration = 10.0f;
+
+	UPROPERTY(EditAnywhere , Category = "Air Jump" , meta = (AllowPrivateAccess = "true"))
+	float AirJumpForce = 1000.0f;
 	
 	UFUNCTION(BlueprintCallable)
 	void MoveForward(const float InputValue);
@@ -83,6 +95,8 @@ private:
 	
 	UFUNCTION(BlueprintCallable)
 	void Sprint();
+
+	void WallSliding(const float DeltaTime);
 
 	UFUNCTION(BlueprintCallable)
 	void Walk();
@@ -102,7 +116,9 @@ private:
 	
 	FVector GetMovementDirection(const FVector& InVector) const;
 
-	void IsTouchingWall();
+	void WallSlideCheck();
 
 	void InitialProperties();
+
+	void ResetZVelocity(bool DoOnce = true);
 };
