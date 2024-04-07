@@ -36,6 +36,8 @@ public:
 
 	FORCEINLINE bool GetIsWallSliding() const {return IsWallSliding;}
 
+	FORCEINLINE bool GetIsWallJumping() const {return IsWallJumping;}
+
 	bool GetIsFalling();
 
 	bool GetIsGround() const;
@@ -66,6 +68,8 @@ private:
 
 	bool IsWallSliding;
 
+	bool IsWallJumping;
+
 	bool HasZVelocityReset;	
 
 	int32 JumpCount;
@@ -86,6 +90,9 @@ private:
 
 	UPROPERTY(EditAnywhere , Category = "Air Jump" , meta = (AllowPrivateAccess = "true"))
 	float AirJumpForce = 1000.0f;
+
+	UPROPERTY(EditAnywhere , Category = "Wall Jump" , meta = (AllowPrivateAccess = "true"))
+	FVector WallJumpVelocity = FVector(800.f , 0.f , 1500.f);
 	
 	UFUNCTION(BlueprintCallable)
 	void MoveForward(const float InputValue);
@@ -104,6 +111,8 @@ private:
 	void AirJump();
 	
 	void GroundJump();
+
+	void WallJump();
 
 	UFUNCTION(BlueprintCallable)
 	void DoJump();

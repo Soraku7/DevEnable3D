@@ -36,6 +36,9 @@ private:
 	bool IsWallSliding;
 
 	UPROPERTY(BlueprintReadOnly , Category = "Parameters" , meta = (AllowPrivateAccess = "true"))
+	bool IsWallJumping;
+
+	UPROPERTY(BlueprintReadOnly , Category = "Parameters" , meta = (AllowPrivateAccess = "true"))
 	bool IsGrounding;
 	
 	UPROPERTY(BlueprintReadOnly , Category = "Parameters" , meta = (AllowPrivateAccess = "true"))

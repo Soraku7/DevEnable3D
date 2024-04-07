@@ -131,8 +131,9 @@ void APlayerCharacter::ResetZVelocity(const bool DoOnce)
 
 void APlayerCharacter::WallSliding(const float DeltaTime)
 {
-	ResetZVelocity();
 
+	IsWallJumping = false;
+	
 	const FVector TargetVelocity = FVector(0.0 , 0.0f , GetVelocity().Z);
 	const FVector NewVelocity = FMath::VInterpTo(GetVelocity() , TargetVelocity , DeltaTime , WallSlideDeceleration);
 
@@ -143,10 +144,10 @@ void APlayerCharacter::WallSliding(const float DeltaTime)
 	
 	SetActorRotation(NewRotation);
 		
-	if(GetVelocity().Z < 0)
-	{
-		GetCharacterMovement() -> GravityScale = WallSlideGravityScale;
-	}
+	if(GetVelocity().Z >= 0) return;
+
+	ResetZVelocity();
+	GetCharacterMovement() -> GravityScale = WallSlideGravityScale;
 }
 
 
@@ -176,6 +177,18 @@ void APlayerCharacter::GroundJump()
 	IsJumping = true;
 }
 
+void APlayerCharacter::WallJump()
+{
+	JumpCount -= 1;
+	
+	const FVector ForwardVelocity = GetActorForwardVector() * WallJumpVelocity.X * -1.0f;
+	const FVector UpwardVelocity = WallJumpVelocity.Z * FVector::UpVector;
+	const FVector NewVelocity = ForwardVelocity + UpwardVelocity;
+	LaunchCharacter(NewVelocity , true , true);
+
+	IsWallJumping = true;
+}
+
 void APlayerCharacter::DoJump()
 {
 	if(JumpCount >= JumpMaxCount) return;
@@ -184,6 +197,13 @@ void APlayerCharacter::DoJump()
 	UE_LOG(LogTemp , Log , TEXT("Jump Count %d MaxCount = %d") , JumpCount , JumpMaxCount);
 	GetCharacterMovement() -> GravityScale = DefaultGravityScale;
 
+	if(IsWallSliding)
+	{
+		UE_LOG(LogTemp , Log , TEXT("蹬墙跳"));
+		WallJump();
+		return;
+	}
+	
 	if(GetMovementComponent() -> IsFalling())
 	{
 		AirJump();
