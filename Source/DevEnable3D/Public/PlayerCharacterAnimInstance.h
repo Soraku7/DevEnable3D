@@ -40,6 +40,9 @@ private:
 
 	UPROPERTY(BlueprintReadOnly , Category = "Parameters" , meta = (AllowPrivateAccess = "true"))
 	bool IsGrounding;
+
+	UPROPERTY(BlueprintReadOnly , Category = "IsSliding" , meta = (AllowPrivateAccess = "true"))
+	bool IsSliding;
 	
 	UPROPERTY(BlueprintReadOnly , Category = "Parameters" , meta = (AllowPrivateAccess = "true"))
 	float MoveSpeed;

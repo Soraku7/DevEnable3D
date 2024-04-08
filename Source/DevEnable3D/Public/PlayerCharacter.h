@@ -38,6 +38,8 @@ public:
 
 	FORCEINLINE bool GetIsWallJumping() const {return IsWallJumping;}
 
+	FORCEINLINE bool GetIsSliding() const {return IsSliding;}
+
 	bool GetIsFalling();
 
 	bool GetIsGround() const;
@@ -58,6 +60,7 @@ private:
 
 	FCollisionQueryParams QueryParams;
 
+	FVector SlideDirection;
 	
 	float DefaultMovementSpeed;
 	float DefaultGravityScale;
@@ -70,7 +73,11 @@ private:
 
 	bool IsWallJumping;
 
-	bool HasZVelocityReset;	
+	bool IsSliding;
+
+	bool HasZVelocityReset;
+
+	bool IsHeadBlocked;
 
 	int32 JumpCount;
 
@@ -90,6 +97,9 @@ private:
 
 	UPROPERTY(EditAnywhere , Category = "Air Jump" , meta = (AllowPrivateAccess = "true"))
 	float AirJumpForce = 1000.0f;
+	
+	UPROPERTY(EditAnywhere , Category = "Sliding" , meta = (AllowPrivateAccess = "true"))
+	float SlideDuration = 0.8f;
 
 	UPROPERTY(EditAnywhere , Category = "Wall Jump" , meta = (AllowPrivateAccess = "true"))
 	FVector WallJumpVelocity = FVector(800.f , 0.f , 1500.f);
@@ -107,6 +117,11 @@ private:
 
 	UFUNCTION(BlueprintCallable)
 	void Walk();
+
+	UFUNCTION(BlueprintCallable)
+	void Slide();
+	
+	void StopSlide();
 	
 	void AirJump();
 	
