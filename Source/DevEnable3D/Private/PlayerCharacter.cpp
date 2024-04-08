@@ -107,7 +107,10 @@ void APlayerCharacter::OnCharacterLanded(const FHitResult& Hit)
 	IsJumping = false;
 	IsAirJumping = false;
 	IsWallSliding = false;
-	HasZVelocityReset = false; 
+	HasZVelocityReset = false;
+
+	GetCharacterMovement() -> GravityScale = DefaultGravityScale;
+	
 	JumpCount = 0;
 }
 
@@ -186,6 +189,12 @@ void APlayerCharacter::WallJump()
 	const FVector NewVelocity = ForwardVelocity + UpwardVelocity;
 	LaunchCharacter(NewVelocity , true , true);
 
+	FRotator NewRotation = NewVelocity.Rotation();
+	NewRotation.Roll = 0.0f;
+	NewRotation.Pitch = 0.0f;
+
+	SetActorRotation(NewRotation);
+	
 	IsWallJumping = true;
 }
 
